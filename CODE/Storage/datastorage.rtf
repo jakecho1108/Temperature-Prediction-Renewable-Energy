@@ -1,0 +1,156 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fmodern\fcharset0 Courier;\f1\fswiss\fcharset0 Helvetica;\f2\fmodern\fcharset0 Courier-Bold;
+\f3\fmodern\fcharset0 Courier-Oblique;}
+{\colortbl;\red255\green255\blue255;\red195\green123\blue89;\red255\green255\blue255;\red73\green153\blue247;
+\red175\green177\blue183;\red38\green158\blue170;\red103\green107\blue114;\red89\green158\blue95;\red174\green176\blue183;
+\red23\green23\blue26;\red0\green0\blue0;\red255\green255\blue255;\red174\green176\blue183;\red195\green123\blue90;
+\red73\green152\blue246;\red89\green158\blue96;\red253\green187\blue90;}
+{\*\expandedcolortbl;;\cssrgb\c81220\c55727\c42361;\cssrgb\c100000\c100000\c100000;\cssrgb\c34783\c67251\c97521;
+\cssrgb\c73883\c74649\c76779;\cssrgb\c16612\c67772\c72361;\cssrgb\c48058\c49711\c52218;\cssrgb\c41261\c67023\c44837;\csgenericrgb\c68235\c69020\c71765;
+\csgenericrgb\c9020\c9020\c10196;\cssrgb\c0\c1\c1;\cssrgb\c100000\c100000\c99971;\cssrgb\c73788\c74552\c76774;\cssrgb\c81247\c55785\c42521;
+\cssrgb\c34522\c66940\c97253;\cssrgb\c41349\c67108\c45002;\cssrgb\c99879\c77609\c42650;}
+\margl1440\margr1440\vieww33400\viewh21000\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 CREATING STORED PROCEDURE:
+\f1 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs26 \cf2 \cb3 CREATE PROCEDURE \cf4 STATETABLE\cf5 (sname \cf2 VARCHAR\cf5 (\cf6 34\cf5 ), tblName \cf2 NVARCHAR\cf5 (\cf6 50\cf5 ))\
+\cf2 BEGIN\
+    DECLARE \cf5 sql_query \cf2 TEXT\cf5 ;\cf7 \
+\
+    \cf2 SET \cf5 sql_query = \cf4 CONCAT\cf5 (\cf8 'CREATE TABLE `'\cf5 , sname, \cf8 '` AS\
+                        SELECT  `'\cf5 , tblName, \cf8 '`.`State`,\
+                                MONTH(cast(`'\cf5 , tblName, \cf8 '`.`Date` as date)) AS MONTH,\
+                                YEAR(cast(`'\cf5 , tblName, \cf8 '`.`Date` as date)) AS YEAR,\
+                                MAX(`'\cf5 , tblName, \cf8 '`.`DailyAverageDryBulbTemperature`) AS MaxDailyAverageDryBulbTemperature,\
+                                MAX(`'\cf5 , tblName, \cf8 '`.`DailyAverageWetBulbTemperature`) AS MaxDailyAverageWetBulbTemperature,\
+                                MAX(`'\cf5 , tblName, \cf8 '`.`DailyAverageRelativeHumidity`) AS MaxDailyAverageRelativeHumidity,\
+                                MAX(`'\cf5 , tblName, \cf8 '`.`DailyAverageWindSpeed`) AS MaxDailyAverageWindSpeed,\
+                                MAX(`'\cf5 , tblName, \cf8 '`.`DailyCollingDegreeDays`) AS MaxDailyCollingDegreeDays,\
+                                MAX(`'\cf5 , tblName, \cf8 '`.`DailyDepartureFromNormalAverageTemperature`) AS MaxDailyDepartureFromNormalAverageTemperature,\
+                                MAX(`'\cf5 , tblName, \cf8 '`.`DailyHeatingDegreeDays`) AS MaxDailyHeatingDegreeDays,\
+                                MAX(`'\cf5 , tblName, \cf8 '`.`DailyPrecipitation`) AS MaxDailyPrecipitation,\
+                                MAX(`'\cf5 , tblName, \cf8 '`.`DailySnowfall`) AS MaxDailySnowfall,\
+                                MAX(`'\cf5 , tblName, \cf8 '`.`MonthlyMeanTemperature`) AS MaxMonthlyMeanTemperature,\
+                                MAX(`'\cf5 , tblName, \cf8 '`.`NormalsCoolingDegreeDay`) AS MaxNormalsCoolingDegreeDay,\
+                                MAX(`'\cf5 , tblName, \cf8 '`.`NormalsHeatingDegreeDay`) AS MaxNormalsHeatingDegreeDay\
+                        FROM `'\cf5 , tblName, \cf8 '`\
+                        GROUP BY `'\cf5 , tblName, \cf8 '`.`State`, MONTH(cast(`'\cf5 , tblName, \cf8 '`.`Date` as date)), YEAR(cast(`'\cf5 , tblName, \cf8 '`.`Date` as date))\
+                        ORDER BY YEAR(cast(`'\cf5 , tblName, \cf8 '`.`Date` as date));'\cf5 );\cf9 \cb10 \
+\
+\
+\
+
+\f2\b \cf11 \cb12 CALL STORED PROCEDURE (EXAMPLE):
+\f0\b0 \cf13 \cb3 \
+\cf14 call 
+\f3\i \cf15 STATETABLE
+\f0\i0 \cf13 (\cf16 'GA'\cf13 , \cf16 'GA_1'\cf13 );\
+\cf13 \
+\
+\cf11 \cb12 CREATE ALL STATE TABLE:\
+\cf14 \cb3 create table \cf13 cse6242.ALL \cf14 AS\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.AK\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.AL\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.AR\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.AZ\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.CA\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.CO\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.CT\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.DE\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.FL\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.GA\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.HI\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.IA\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.ID\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.IL\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.IN\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.KS\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.KY\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.LA\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.MA\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.MD\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.ME\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.MI\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.MN\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.MO\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.MS\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.MT\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.NC\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.ND\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.NE\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.NH\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.NJ\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.NM\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.NV\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.NY\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.OH\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.OK\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.OR\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.PA\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.RI\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.SC\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.SD\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.TN\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.TX\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.UT\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.VA\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.VT\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.WA\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.WI\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.WV\
+    \cf14 UNION\
+    SELECT \cf17 * \cf14 FROM \cf13 cse6242.WY\
+  ;\
+}
